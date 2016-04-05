@@ -1,0 +1,17 @@
+PRODUCTION = False
+DEBUG = True
+
+# Admins
+ADMINS = (
+    ('YOU', 'you@yourdomain.com'),
+)
+MANAGERS = ADMINS
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'c4db',
+        'USER': 'postgres',
+        'PASSWORD': 'password'
+    }
+}
