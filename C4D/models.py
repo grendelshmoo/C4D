@@ -2,33 +2,33 @@ from django.db import models
 
 class TitleCompany(models.Model):
     name = models.CharField(max_length=256)
-    
+
     def __unicode__(self):
         return self.name
 
 class Municipality(models.Model):
     name = models.CharField(max_length=256)
-    
+
     def __unicode__(self):
         return self.name
 
 class Condominium(models.Model):
     name = models.CharField(max_length=256)
-    
+
     def __unicode__(self):
         return self.name
 
 # Change to choice field?
 class Island(models.Model):
     name = models.CharField(max_length=256)
-    
+
     def __unicode__(self):
         return self.name
 
 class Office(models.Model):
     name = models.CharField(max_length=200)
     airport_code = models.CharField(max_length=3)
-    
+
     def __unicode__(self):
         return "%s (%s) " % (self.name, self.airport_code)
 
@@ -51,7 +51,7 @@ class Property(models.Model):
     island = models.ForeignKey(Island, blank=False, null=False)
     municipality = models.ForeignKey(Municipality, blank=True, null=True)
     condominium = models.ForeignKey(Condominium, blank=True, null=True)
-    
+
 class LandRecord(models.Model):
     office = models.ForeignKey(Office, null=False)
     property = models.ForeignKey(Property, null=False)
@@ -68,6 +68,7 @@ class LandRecord(models.Model):
     #properties = models.ManyToManyField('Property', blank=True, null=True)
 
 class Transaction(models.Model):
+    # One to one?
     record = models.ForeignKey(LandRecord, blank=True, null=True)
     amount = models.FloatField(default=0.0)
     recording_fees = models.FloatField(default=0.0)
