@@ -34,42 +34,78 @@ class Command(BaseCommand):
         for row in rows:
             rlr = RawLandRecord()
             rlr.office = row['office']
-            rlr.document_date = xlrd.xldate.xldate_as_datetime(row['document_date'], 0)
-            rlr.recording_date = xlrd.xldate.xldate_as_datetime(row['recording_date'], 0)
+            document_date = row['document_date']
+            if document_date:
+                rlr.document_date = xlrd.xldate.xldate_as_datetime(document_date, 0)
+            recording_date = row['recording_date']
+            if recording_date:
+                rlr.recording_date = xlrd.xldate.xldate_as_datetime(recording_date, 0)
             rlr.title_company = row['title_company']
             rlr.legal_description = row['legal_description']
             rlr.lot = row['lot']
             rlr.block = row['block']
             rlr.unit = row['unit']
-            rlr.area = row['area']
+            area = row['area']
+            if area:
+                rlr.area = area
             rlr.phase = row['phase']
-            rlr.tract = row['tract']
-            rlr.increment = row['increment']
-            rlr.lot_sf = row['square_footage']
-            rlr.building_sf = row['building_square_footage']
-            rlr.map_document = row['map_document']
+            tract = row['tract']
+            if tract:
+                rlr.tract = tract
+            increment = row['increment']
+            if increment:
+                rlr.increment = increment
+            lot_sf = row['square_footage']
+            if lot_sf:
+                rlr.lot_sf = lot_sf
+            building_sf = row['building_square_footage']
+            if building_sf:
+                rlr.building_sf = building_sf
+            map_document = row['map_document']
+            if map_document:
+                rlr.map_document = map_document
             rlr.building_type = row['building_type']
-            rlr.year_built = row['year_built']
+            year_built = row['year_built']
+            if year_built:
+                rlr.year_built = year_built
             rlr.construction_type  = row['type_of_construction']
             rlr.building_condition = row['building_condition']
             rlr.island = row['island']
             rlr.municipality = row['municipality']
             rlr.instrument_number = row['instrument_number']
             rlr.fy_number = row['fy_number']
-            rlr.lcdn = row['lcdn']
-            rlr.book = row['book']
-            rlr.page = row['page']
-            rlr.amount = row['lcdn']
-            rlr.recording_fees = row['recording_fees']
-            rlr.land_tax = row['land_tax']
-            rlr.building_tax = row['building_tax']
-            rlr.land_appraised_value = row['land_appraised_value']
-            rlr.building_appraised_value = row['building_appraised_value']
+            lcdn = row['lcdn']
+            if lcdn:
+                rlr.lcdn = lcdn
+            book = row['book']
+            if book:
+                rlr.book = book
+            page = row['page']
+            if page:
+                rlr.page = page
+            amount = row['amount']
+            if amount:
+                rlr.amount = amount
+            recording_fees = row['recording_fees']
+            if recording_fees:
+                rlr.recording_fees = recording_fees
+            land_tax = row['land_tax']
+            if land_tax:
+                rlr.land_tax = land_tax
+            building_tax = row['building_tax']
+            if building_tax:
+                rlr.building_tax = bulding_tax
+            lav = row['land_appraised_value']
+            if lav:
+                rlr.land_appraised_value = lav
+            bav = row['building_appraised_value']
+            if bav:
+                rlr.building_appraised_value = bav
             rlr.remarks = row['remarks']
-            # Optional fields
-            #if 'cnmi_file_number' in row:
-            #    rlr.cnmi_file_numer = row['cnmi_file_numer']
-            #if 'condominium' in row:
-            #    rlr.condominium = row['condominium']
+            if 'cnmi_file_number' in row:
+                rlr.cnmi_file_numer = row['cnmi_file_number']
+            if 'condominium' in row:
+                rlr.condominium = row['condominium']
+
             rlr.save()
             print(".")
