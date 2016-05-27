@@ -38,6 +38,7 @@ class RawLandRecord(models.Model):
     land_appraised_value = models.FloatField(default=0.0)
     building_appraised_value = models.FloatField(default=0.0)
     remarks = models.CharField(max_length=256, blank=True, null=True)
+    
 
 class TitleCompany(models.Model):
     name = models.CharField(max_length=256)
