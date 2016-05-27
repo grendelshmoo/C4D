@@ -54,10 +54,8 @@ class Command(BaseCommand):
             rlr.building_condition = row['building_condition']
             rlr.island = row['island']
             rlr.municipality = row['municipality']
-            rlr.condominium = row['condominium']
             rlr.instrument_number = row['instrument_number']
             rlr.fy_number = row['fy_number']
-            rlr.cnmi_file_numer = row['cnmi_file_numer']
             rlr.lcdn = row['lcdn']
             rlr.book = row['book']
             rlr.page = row['page']
@@ -68,4 +66,10 @@ class Command(BaseCommand):
             rlr.land_appraised_value = row['land_appraised_value']
             rlr.building_appraised_value = row['building_appraised_value']
             rlr.remarks = row['remarks']
+            # Optional fields
+            #if 'cnmi_file_number' in row:
+            #    rlr.cnmi_file_numer = row['cnmi_file_numer']
+            #if 'condominium' in row:
+            #    rlr.condominium = row['condominium']
             rlr.save()
+            print(".")
