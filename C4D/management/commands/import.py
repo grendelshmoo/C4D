@@ -50,7 +50,7 @@ class Command(BaseCommand):
             rlr.map_document = row['map_document']
             rlr.building_type = row['building_type']
             rlr.year_built = row['year_built']
-            rlr.construction_type  = row['construction_type']
+            rlr.construction_type  = row['type_of_construction']
             rlr.building_condition = row['building_condition']
             rlr.island = row['island']
             rlr.municipality = row['municipality']
