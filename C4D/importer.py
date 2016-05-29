@@ -32,7 +32,7 @@ class Importer(object):
         if len(bad_rows) > 0:
             print("Bad data (%d): " % len(bad_rows))
             for r in bad_rows:
-                print("Row %s: %s" % (r.row, r.reason))
+                print("Row %s: %s" % (r['row'], r['reason']))
 
     def row_to_object(self, row):
         rlr = RawLandRecord()
