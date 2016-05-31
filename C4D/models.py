@@ -6,6 +6,8 @@ class RawLandRecord(models.Model):
     document_date = models.DateField(blank=True, null=True)
     recording_date = models.DateField(blank=True, null=True)
     document_type = models.CharField(max_length=128, blank=True, null=True)
+    grantor = models.CharField(max_length=256, blank=True, null=True)
+    grantee = models.CharField(max_length=256, blank=True, null=True)
     title_company = models.CharField(max_length=256, blank=True, null=True)
     legal_description = models.CharField(max_length=256, blank=True, null=True)
     lot = models.CharField(max_length=64, blank=True, null=True)

@@ -43,6 +43,9 @@ class Importer(object):
         recording_date = row['recording_date']
         if recording_date:
             rlr.recording_date = xlrd.xldate.xldate_as_datetime(recording_date, 0)
+        rlr.document_type = row['document_type']
+        rlr.grantor = row['grantor']
+        rlr.grantee = row['grantee']
         rlr.title_company = row['title_company']
         rlr.legal_description = row['legal_description']
         rlr.lot = row['lot']
