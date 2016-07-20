@@ -25,7 +25,7 @@
     <!-- Header -->
     <div id="header">
         <div id="branding">
-        {% block branding %}<h1>{% settings_value "SITE_TITLE" %}</h1>{% endblock %}
+        <h1>{% settings_value "SITE_TITLE" %}</h1>
         </div>
         {% block usertools %}
         {% if has_permission %}
