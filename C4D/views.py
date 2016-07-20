@@ -10,5 +10,9 @@ def home(request):
     return render_to_response('home.html',{'has_permission':True}, RequestContext(request))
 
 @login_required
+def search(request):
+    return render_to_response('search.html',{'has_permission':True}, RequestContext(request))
+
+@login_required
 def import_file(request):
     return render_to_response('import_file.html',{'has_permission':True}, RequestContext(request))

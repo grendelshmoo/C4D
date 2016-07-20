@@ -7,6 +7,7 @@ from C4D import views
 
 urlpatterns = [
     url(r'^$', views.home, name='home'),
+    url(r'^search/', views.search, name='search'),
     url(r'^import/', views.import_file, name='import_file'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^login/$', login),
@@ -15,7 +16,4 @@ urlpatterns = [
     #url(r'^reset/done/$', password_reset_done, {'template_name': 'password_reset_done.html'}, 'password_reset_done'),
     #url(r'^reset/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', password_reset_confirm, {'template_name': 'password_reset_confirm.html'}, 'password_reset_confirm'),
     #url(r'^reset/complete/$', password_reset_complete, {'template_name': 'password_reset_complete.html'}, 'password_reset_complete'),
-
 ]
-
-admin.site.site_header = settings.SITE_TITLE
