@@ -12,37 +12,30 @@ from C4D.models import RawLandRecord
 def home(request):
     return render_to_response('home.html',{}, RequestContext(request))
 
-def record_search(search_form):
-    if not search_form.is_valid():
-        raise Exception("Invalid Search Form")
-
-    results = RawLandRecord.objects.all()
-    if search_form.cleaned_data['legal_description']:
-        results = results.filter(legal_description__icontains=search_form.cleaned_data['legal_description'])
-    if search_form.cleaned_data['lot']:
-        results = results.filter(lot__icontains=search_form.cleaned_data['lot'])
-    if search_form.cleaned_data['block']:
-        results = results.filter(block__icontains=search_form.cleaned_data['block'])
-    if search_form.cleaned_data['tract']:
-        results = results.filter(tract__icontains=search_form.cleaned_data['tract'])
-    if search_form.cleaned_data['grantor']:
-        results = results.filter(grantor__icontains=search_form.cleaned_data['grantor'])
-    if search_form.cleaned_data['grantee']:
-        results = results.filter(grantee__icontains=search_form.cleaned_data['grantee'])
-
-    if results.count() > 1000:
-        raise Exception("Search too broad.  Returned %d rows!" % results.count())
-    return results
-
 @login_required
 def search(request):
     search_results = None
     if request.method == "POST":
         search_form = ModelSearchForm(request.POST)
-        try:
-            search_results = record_search(search_form)
-        except Exception as e:
-            messages.add_message(request, messages.ERROR, e)
+        if not search_form.is_valid():
+            messages.add_message(request, messages.ERROR, "Invalid Search Form")
+        else:
+            search_results = RawLandRecord.objects.all()
+            if search_form.cleaned_data['legal_description']:
+                search_results = search_results.filter(legal_description__icontains=search_form.cleaned_data['legal_description'])
+            if search_form.cleaned_data['lot']:
+                search_results = search_results.filter(lot__icontains=search_form.cleaned_data['lot'])
+            if search_form.cleaned_data['block']:
+                search_results = search_results.filter(block__icontains=search_form.cleaned_data['block'])
+            if search_form.cleaned_data['tract']:
+                search_results = search_results.filter(tract__icontains=search_form.cleaned_data['tract'])
+            if search_form.cleaned_data['grantor']:
+                search_results = search_results.filter(grantor__icontains=search_form.cleaned_data['grantor'])
+            if search_form.cleaned_data['grantee']:
+                search_results = search_results.filter(grantee__icontains=search_form.cleaned_data['grantee'])
+            if search_results.count() > 1000:
+                messages.add_message(request, messages.ERROR, "Search too broad.  Returned %d rows!" % search_results.count())
+                search_result = None
     else:
         search_form = ModelSearchForm()
 
