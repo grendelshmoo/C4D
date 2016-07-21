@@ -1,5 +1,42 @@
 {% extends "admin/base.html" %}
 
 {% block content %}
-  New Search Page
+
+{% if search_results %}
+<h2>Search Results ({{ search_results.count }})</h2>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Office</th>
+    <th>Island</th>
+    <th>Document Date</th>
+    <th>Legal Description</th>
+    <th>Lot</th>
+    <th>Block</th>
+    <th>Tract</th>
+  </tr>
+  {% for r in search_results %}
+    <tr class="{% cycle 'row-even' 'row-odd' %}">
+      <td><a href="{% url 'view_record' r.id %}">{{ r.id }}</a></td>
+      <td>{{ r.office }}</td>
+      <td>{{ r.island }}</td>
+      <td>{{ r.document_date }}</td>
+      <td>{{ r.legal_description }}</td>
+      <td>{{ r.lot }}</td>
+      <td>{{ r.block }}</td>
+      <td>{{ r.tract }}</td>
+    </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+<h2>Search Criteria</h2>
+<form action="." method="post">
+    {% csrf_token %}
+    <table>
+    {{ search_form.as_table }}
+  </table>
+    <input type="submit" value="Search" />
+</form>
+
 {% endblock %}

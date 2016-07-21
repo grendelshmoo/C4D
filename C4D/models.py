@@ -12,10 +12,10 @@ class RawLandRecord(models.Model):
     legal_description = models.CharField(max_length=256, blank=True, null=True)
     lot = models.CharField(max_length=64, blank=True, null=True)
     block = models.CharField(max_length=32, blank=True, null=True)
+    tract = models.CharField(max_length=32, blank=True, null=True)
     unit = models.CharField(max_length=32, blank=True, null=True)
     area = models.FloatField(blank=True, null=True)
     phase = models.CharField(max_length=32, blank=True, null=True)
-    tract = models.IntegerField(blank=True, null=True)
     increment = models.PositiveSmallIntegerField(blank=True, null=True)
     lot_sf = models.FloatField(blank=True, null=True)
     building_sf = models.FloatField(blank=True, null=True)
@@ -29,7 +29,7 @@ class RawLandRecord(models.Model):
     condominium = models.CharField(max_length=256, blank=True, null=True)
     instrument_number = models.CharField(max_length=32, blank=True, null=True)
     fy_number = models.CharField(max_length=64, blank=True, null=True)
-    cnmi_file_numer = models.CharField(max_length=32, blank=True, null=True)
+    cnmi_file_number = models.CharField(max_length=32, blank=True, null=True)
     lcdn = models.IntegerField(blank=True, null=True)
     book = models.PositiveSmallIntegerField(blank=True, null=True)
     page = models.PositiveSmallIntegerField(blank=True, null=True)
@@ -79,14 +79,14 @@ class Office(models.Model):
         return "%s (%s) " % (self.name, self.airport_code)
 
 
-class Property(models.Model):
+class Plot(models.Model):
     legal_description = models.CharField(max_length=256, blank=True, null=True)
     lot = models.CharField(max_length=64, blank=True, null=True)
     block = models.CharField(max_length=32, blank=True, null=True)
+    tract = models.IntegerField()
     unit = models.CharField(max_length=32, blank=True, null=True)
     area = models.FloatField(blank=True, null=True)
     phase = models.CharField(max_length=32, blank=True, null=True)
-    tract = models.IntegerField()
     increment = models.PositiveSmallIntegerField()
     lot_sf = models.FloatField(blank=True, null=True)
     building_sf = models.FloatField(blank=True, null=True)
@@ -102,7 +102,7 @@ class Property(models.Model):
 
 class LandRecord(models.Model):
     office = models.ForeignKey(Office, null=False)
-    property = models.ForeignKey(Property, null=False)
+    plot = models.ForeignKey(Plot, null=False)
     document_date = models.DateField(blank=True, null=True)
     recording_date = models.DateField(blank=True, null=True)
     document_type = models.CharField(max_length=128, blank=True, null=True)

@@ -1,0 +1,52 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+
+{% if not record %}
+  <h2>Record Not Found</h2>
+{% else %}
+  <h2>Raw Land Record: {{ record.id }}</h2>
+
+  <table style="margin-left: 2em;">
+    {% include 'record_row.html' with label="office" value=record.office %}
+    {% include 'record_row.html' with label="document_date" value=record.document_date %}
+    {% include 'record_row.html' with label="recording_date" value=record.recording_date %}
+    {% include 'record_row.html' with label="legal_description" value=record.legal_description %}
+    {% include 'record_row.html' with label="lot" value=record.lot %}
+    {% include 'record_row.html' with label="block" value=record.block %}
+    {% include 'record_row.html' with label="tract" value=record.tract %}
+    {% include 'record_row.html' with label="grantor" value=record.grantor %}
+    {% include 'record_row.html' with label="grantee" value=record.grantee %}
+    {% include 'record_row.html' with label="title_company" value=record.title_company %}
+    {% include 'record_row.html' with label="unit" value=record.unit %}
+    {% include 'record_row.html' with label="area" value=record.area %}
+    {% include 'record_row.html' with label="phase" value=record.phase %}
+    {% include 'record_row.html' with label="increment" value=record.increment %}
+    {% include 'record_row.html' with label="lot_sf" value=record.lot_sf %}
+    {% include 'record_row.html' with label="building_sf" value=record.building_sf %}
+    {% include 'record_row.html' with label="map_document" value=record.map_document %}
+    {% include 'record_row.html' with label="building_type" value=record.building_type %}
+    {% include 'record_row.html' with label="year_built" value=record.year_built %}
+    {% include 'record_row.html' with label="construction_type" value=record.construction_type %}
+    {% include 'record_row.html' with label="building_condition" value=record.building_condition %}
+    {% include 'record_row.html' with label="island" value=record.island %}
+    {% include 'record_row.html' with label="municipality" value=record.municipality %}
+    {% include 'record_row.html' with label="condominium" value=record.condominium %}
+    {% include 'record_row.html' with label="instrument_number" value=record.instrument_number %}
+    {% include 'record_row.html' with label="fy_number" value=record.fy_number %}
+    {% include 'record_row.html' with label="cnmi_file_number" value=record.cnmi_file_number %}
+    {% include 'record_row.html' with label="lcdn" value=record.lcdn %}
+    {% include 'record_row.html' with label="book" value=record.book %}
+    {% include 'record_row.html' with label="page" value=record.page %}
+    {% include 'record_row.html' with label="amount" value=record.amount %}
+    {% include 'record_row.html' with label="recording_fees" value=record.recording_fees %}
+    {% include 'record_row.html' with label="land_tax" value=record.land_tax %}
+    {% include 'record_row.html' with label="building_tax" value=record.building_tax %}
+    {% include 'record_row.html' with label="land_appraised_value" value=record.land_appraised_value %}
+    {% include 'record_row.html' with label="building_appraised_value" value=record.building_appraised_value %}
+    {% include 'record_row.html' with label="remarks" value=record.remarks %}
+  </table>
+  <a href="{% url 'admin:C4D_rawlandrecord_change' record.id %}">Edit Record</a>
+{% endif %}
+
+{% endblock %}

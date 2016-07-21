@@ -50,14 +50,12 @@ class Importer(object):
         rlr.legal_description = row['legal_description']
         rlr.lot = row['lot']
         rlr.block = row['block']
+        rlr.tract = row['tract']
         rlr.unit = row['unit']
         area = row['area']
         if area:
             rlr.area = area
         rlr.phase = row['phase']
-        tract = row['tract']
-        if tract:
-            rlr.tract = tract
         increment = row['increment']
         if increment:
             rlr.increment = increment
