@@ -58,7 +58,7 @@ def import_file(request):
         if form.is_valid():
             upload_file = request.FILES['file']
             xls_book = xlrd.open_workbook(file_contents=upload_file.read())
-            importer = Importer(request.user, upload_file.name, print_to_console=False)
+            importer = Importer(request.user, upload_file.name)
             importer.import_data(xls_book)
             logs = importer.logs
     else:
