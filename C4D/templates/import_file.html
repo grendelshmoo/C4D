@@ -19,4 +19,37 @@
 		<input type='submit' value='Upload'/>
 	</form>
 
+	<h2>Import Logs</h2>
+	<table>
+		<thead>
+			<th>
+				Imported By
+			</th>
+			<th>
+				Start Timestamp
+			</th>
+			<th>
+				End Timestamp
+			</th>
+			<th>
+				Filename
+			</th>
+		</thead>
+		{% for log in import_logs %}
+		<tr class="{% cycle 'row-even' 'row-odd' %}">
+			<td>
+				{{ log.imported_by }}
+			</td>
+			<td>
+				{{ log.start_ts}}
+			</td>
+			<td>
+				{{ log.end_ts}}
+			</td>
+			<td>
+				{{ log.file_name}}
+			</td>
+		</tr>
+		{% endfor %}
+	</table>
 {% endblock %}
