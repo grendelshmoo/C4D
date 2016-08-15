@@ -1,12 +1,14 @@
 from django.contrib import admin
 
-from models import *
+from models import ImportLog, RawLandRecord
 
 class RawLandRecordAdmin(admin.ModelAdmin):
     search_fields = ('legal_description', 'lot')
     list_display=('id', 'office', 'island', 'document_date', 'legal_description')
     list_filter=('office', 'island')
 admin.site.register(RawLandRecord, RawLandRecordAdmin)
+
+admin.site.register(ImportLog)
 
 # Normalized tables for later version
 #admin.site.register(Office)

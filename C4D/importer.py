@@ -8,14 +8,14 @@ from C4D.models import RawLandRecord, ImportLog
 
 class Importer(object):
 
-    def __init__(self, user, print_to_console=True):
-        self.user = user
+    def __init__(self, user, file_name, print_to_console=True):
         self.print_to_console = print_to_console
         self.logs = []
 
         # Start our log
         self.import_log = ImportLog()
         self.import_log.user = user
+        self.import_log.file_name = file_name
         self.import_log.save()
 
     def log_message(self, msg, new_line=True):
@@ -91,8 +91,10 @@ class Importer(object):
         r.land_appraised_value = row['land_appraised_value']
         r.building_appraised_value = row['building_appraised_value']
         r.remarks = row['remarks']
-        r.cnmi_file_numer = row['cnmi_file_number']
-        r.condominium = row['condominium']
+        if 'cnmi_file_number' in row:
+            r.cnmi_file_numer = row['cnmi_file_number']
+        if 'condominium' in row:
+            r.condominium = row['condominium']
         return r
 
     # def row_to_object(self, row):

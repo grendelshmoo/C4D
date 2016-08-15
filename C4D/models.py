@@ -48,7 +48,7 @@ class RawLandRecord(models.Model):
     recording_fees = models.CharField(max_length=32, blank=True, null=True)
     land_tax = models.CharField(max_length=32, blank=True, null=True)
     building_tax = models.CharField(max_length=32, blank=True, null=True)
-    land_appraised_value = models.ChargitField(max_length=32, blank=True, null=True)
+    land_appraised_value = models.CharField(max_length=32, blank=True, null=True)
     building_appraised_value = models.CharField(max_length=32, blank=True, null=True)
     remarks = models.CharField(max_length=1024, blank=True, null=True)
     import_log = models.ForeignKey(ImportLog, blank=True, null=True)
