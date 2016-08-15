@@ -58,7 +58,9 @@ def import_file(request):
         if form.is_valid():
             upload_file = request.FILES['file']
             xl_file = xlrd.open_workbook(file_contents=upload_file.read())
-            print(xl_file)
+            importer = Importer()
+            xl_dict = importer.book_to_dict(xl_file)
+            print(xl_dict)
     else:
         form = UploadFileForm()
     return render_to_response('import_file.html', {'form':form}, RequestContext(request))
