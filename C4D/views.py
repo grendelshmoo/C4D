@@ -9,7 +9,7 @@ from django.forms.models import model_to_dict
 import xlrd
 
 from C4D.forms import ModelSearchForm, UploadFileForm
-from C4D.models import RawLandRecord
+from C4D.models import RawLandRecord, ImportLog
 from C4D.importer import Importer
 
 def home(request):
@@ -63,4 +63,5 @@ def import_file(request):
             logs = importer.logs
     else:
         form = UploadFileForm()
-    return render_to_response('import_file.html', {'form':form, 'logs': logs}, RequestContext(request))
+    import_logs = ImportLog.objects.all()[:5]
+    return render_to_response('import_file.html', {'form':form, 'logs': logs, 'import_logs': import_logs}, RequestContext(request))
