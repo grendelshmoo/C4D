@@ -10,7 +10,7 @@ class Importer(object):
 
     def import_file(self, excel_file):
         print("Loading '%s'..." % excel_file, end="")
-        rows = self.xls_to_dict(excel_file)
+        rows = self.xls_file_to_dict(excel_file)
         print(" Loaded %d rows." % len(rows))
 
         print('Creating records', end="")
@@ -113,8 +113,11 @@ class Importer(object):
 
         return rlr
 
-    def xls_to_dict(self, filename):
+    def xls_file_to_dict(self, filename):
         book = xlrd.open_workbook(filename)
+        return book_to_dict(book)
+
+    def book_to_dict(self, book):
         sheet = book.sheet_by_index(0)
         keys = [sheet.cell(0, col_index).value for col_index in xrange(sheet.ncols)]
         dict_list = []
