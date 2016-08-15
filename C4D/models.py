@@ -1,4 +1,15 @@
 from django.db import models
+from django.contrib.auth.models import User
+
+
+class ImportLog(models.Model):
+    imported_by = models.ForeignKey(User, blank=True, null=True, related_name="+")
+    start_ts = models.DateTimeField(auto_now=True)
+    end_ts = models.DateTimeField(null=True, blank=True)
+    file_name = models.CharField(max_length=256)
+
+    def __unicode__(self):
+        return self.file_name
 
 
 class RawLandRecord(models.Model):
@@ -40,6 +51,7 @@ class RawLandRecord(models.Model):
     land_appraised_value = models.CharField(max_length=32, blank=True, null=True)
     building_appraised_value = models.CharField(max_length=32, blank=True, null=True)
     remarks = models.CharField(max_length=256, blank=True, null=True)
+    import_log = models.ForeignKey(ImportLog, blank=True, null=True)
 
 
 class TitleCompany(models.Model):
