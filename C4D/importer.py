@@ -36,9 +36,7 @@ class Importer(object):
                 raw_land_record = self.row_to_object(row)
                 raw_land_record.save()
                 new_records.append(raw_land_record.id)
-                self.log_message('.', new_line=False)
             except Exception as e:
-                self.log_message('X', new_line=False)
                 bad_rows.append({'row':row_number+1, 'reason':str(e)})
 
         self.log_message('')

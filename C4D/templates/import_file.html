@@ -1,29 +1,12 @@
 {% extends "admin/base.html" %}
 
 {% block content %}
-	{% if imported_file %}
+	{% if logs %}
 	<h2>Imported File</h2>
 	<table>
-		<tr>
-	    <th>ID</th>
-	    <th>Office</th>
-	    <th>Island</th>
-	    <th>Document Date</th>
-	    <th>Legal Description</th>
-	    <th>Lot</th>
-	    <th>Block</th>
-	    <th>Tract</th>
-	  </tr>
-		{% for r in import_file %}
+		{% for r in logs %}
 		<tr class="{% cycle 'row-even' 'row-odd' %}">
-      <td><a href="{% url 'view_record' r.id %}">{{ r.id }}</a></td>
-      <td>{{ r.office }}</td>
-      <td>{{ r.island }}</td>
-      <td>{{ r.document_date }}</td>
-      <td>{{ r.legal_description }}</td>
-      <td>{{ r.lot }}</td>
-      <td>{{ r.block }}</td>
-      <td>{{ r.tract }}</td>
+      <td>{{ r }} </td>
     </tr>
 		{% endfor %}
 	</table>
