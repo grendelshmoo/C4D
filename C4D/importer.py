@@ -3,14 +3,15 @@ from __future__ import print_function
 import xlrd
 
 from django.conf import settings
+from django.utils import timezone
 
 from C4D.models import RawLandRecord, ImportLog
 
 class Importer(object):
 
-    def __init__(self, user, file_name, print_to_console=True):
-        self.print_to_console = print_to_console
-        self.logs = []
+    def __init__(self, user, file_name):
+        self.print_to_console = False
+        self.messages = []
 
         # Start our log
         self.import_log = ImportLog()
@@ -18,16 +19,13 @@ class Importer(object):
         self.import_log.file_name = file_name
         self.import_log.save()
 
-    def log_message(self, msg, new_line=True):
-        self.logs.append(msg)
+    def log_message(self, msg):
+        self.messages.append(msg)
         if self.print_to_console:
-            if new_line:
-                print(msg)
-            else:
-                print(msg, end="")
+            print(msg)
 
     def import_file(self, excel_file):
-        self.log_message("Loading '%s'..." % excel_file, new_line=False)
+        self.log_message("Loading '%s'..." % excel_file)
         book = xlrd.open_workbook(excel_file)
         return self.import_data(book)
 
@@ -35,7 +33,7 @@ class Importer(object):
         bad_rows = []
         new_records = []
         rows = self.book_to_dict(xls_book)
-        self.log_message(" Loaded %d rows." % len(rows))
+        self.log_message("Loaded %d rows." % len(rows))
         for row_number, row in enumerate(rows):
             try:
                 raw_land_record = self.row_to_object(row)
@@ -43,14 +41,16 @@ class Importer(object):
                 new_records.append(raw_land_record.id)
             except Exception as e:
                 bad_rows.append({'row':row_number+1, 'reason':str(e)})
-
-        self.log_message('')
         self.log_message("Saved %d Raw Land Records" % len(new_records))
 
+        # TODO - Output Bad File Data
         if len(bad_rows) > 0:
             self.log_message("Bad data (%d): " % len(bad_rows))
             for r in bad_rows:
                 self.log_message("Row %s: %s" % (r['row'], r['reason']))
+
+        # End our log
+        self.import_log.mark_end()
 
     def row_to_object(self, row):
         r = RawLandRecord()

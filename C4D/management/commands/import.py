@@ -13,5 +13,6 @@ class Command(BaseCommand):
         if not labels or len(labels) != 1:
             raise CommandError('Enter one argument, the path to the excel file.')
         excel_file = labels[0]
-        importer = Importer()
+        importer = Importer(None, excel_file)
+        importer.print_to_console = True
         importer.import_file(excel_file)
