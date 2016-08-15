@@ -1,6 +1,39 @@
 {% extends "admin/base.html" %}
 
 {% block content %}
-	This page is home for the future web based file importer.  Currently you
-	need command line access in order to import files.
+	{% if imported_file %}
+	<h2>Imported File</h2>
+	<table>
+		<tr>
+	    <th>ID</th>
+	    <th>Office</th>
+	    <th>Island</th>
+	    <th>Document Date</th>
+	    <th>Legal Description</th>
+	    <th>Lot</th>
+	    <th>Block</th>
+	    <th>Tract</th>
+	  </tr>
+		{% for r in import_file %}
+		<tr class="{% cycle 'row-even' 'row-odd' %}">
+      <td><a href="{% url 'view_record' r.id %}">{{ r.id }}</a></td>
+      <td>{{ r.office }}</td>
+      <td>{{ r.island }}</td>
+      <td>{{ r.document_date }}</td>
+      <td>{{ r.legal_description }}</td>
+      <td>{{ r.lot }}</td>
+      <td>{{ r.block }}</td>
+      <td>{{ r.tract }}</td>
+    </tr>
+		{% endfor %}
+	</table>
+	{% endif %}
+
+	<h2>Import File</h2>
+	<form method='POST' action='.' name='upload' enctype="multipart/form-data">
+		{% csrf_token %}
+		<input type='file' name='file' />
+		<input type='submit' value='Upload'/>
+	</form>
+
 {% endblock %}

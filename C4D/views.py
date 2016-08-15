@@ -6,8 +6,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.forms.models import model_to_dict
 
-from C4D.forms import ModelSearchForm
+import xlrd
+
+from C4D.forms import ModelSearchForm, UploadFileForm
 from C4D.models import RawLandRecord
+from C4D.importer import Importer
 
 def home(request):
     return render_to_response('home.html',{}, RequestContext(request))
@@ -49,4 +52,13 @@ def view_record(request, record_id):
 @login_required
 @permission_required('C4D.add_rawlandrecord', login_url='/')
 def import_file(request):
-    return render_to_response('import_file.html', {}, RequestContext(request))
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        print(form)
+        if form.is_valid():
+            upload_file = request.FILES['file']
+            xl_file = xlrd.open_workbook(file_contents=upload_file.read())
+            print(xl_file)
+    else:
+        form = UploadFileForm()
+    return render_to_response('import_file.html', {'form':form}, RequestContext(request))

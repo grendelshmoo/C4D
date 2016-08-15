@@ -9,6 +9,9 @@ class ModelSearchForm(forms.ModelForm):
         model = RawLandRecord
         fields = ['legal_description', 'lot', 'block', 'tract', 'grantor', 'grantee']
 
+class UploadFileForm(forms.Form):
+    file = forms.FileField()
+
 class SearchForm(forms.Form):
     lot = forms.CharField(max_length=16, required=False)
     block = forms.CharField(max_length=16, required=False)
