@@ -63,5 +63,5 @@ def import_file(request):
             logs = importer.messages
     else:
         form = UploadFileForm()
-    import_logs = ImportLog.objects.all()[:5]
+    import_logs = ImportLog.objects.all().order_by('-start_ts')[:5]
     return render_to_response('import_file.html', {'form':form, 'logs': logs, 'import_logs': import_logs}, RequestContext(request))

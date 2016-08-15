@@ -34,6 +34,9 @@
 			<th>
 				Filename
 			</th>
+			<th>
+				rows
+			</th>
 		</thead>
 		{% for log in import_logs %}
 		<tr class="{% cycle 'row-even' 'row-odd' %}">
@@ -48,6 +51,9 @@
 			</td>
 			<td>
 				{{ log.file_name}}
+			</td>
+			<td>
+				{{ log.rawlandrecord_set.count }}
 			</td>
 		</tr>
 		{% endfor %}
