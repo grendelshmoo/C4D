@@ -15,7 +15,7 @@ class Importer(object):
 
         # Start our log
         self.import_log = ImportLog()
-        self.import_log.user = user
+        self.import_log.imported_by = user
         self.import_log.file_name = file_name
         self.import_log.save()
 
