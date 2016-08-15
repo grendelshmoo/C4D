@@ -60,7 +60,7 @@ def import_file(request):
             xls_book = xlrd.open_workbook(file_contents=upload_file.read())
             importer = Importer(request.user, upload_file.name)
             importer.import_data(xls_book)
-            logs = importer.logs
+            logs = importer.messages
     else:
         form = UploadFileForm()
     import_logs = ImportLog.objects.all()[:5]
