@@ -8,31 +8,46 @@ from C4D.models import RawLandRecord
 
 class Importer(object):
 
-    def import_file(self, excel_file):
-        print("Loading '%s'..." % excel_file, end="")
-        rows = self.xls_file_to_dict(excel_file)
-        print(" Loaded %d rows." % len(rows))
+    def __init__(self, print_to_console=True):
+        self.print_to_console = print_to_console
+        self.logs = []
 
-        print('Creating records', end="")
+    def log_message(self, msg, new_line=True):
+        self.logs.append(msg)
+        if self.print_to_console:
+            if new_line:
+                print(msg)
+            else:
+                print(msg, end="")
+
+    def import_file(self, excel_file):
+        self.log_message("Loading '%s'..." % excel_file, new_line=False)
+        book = xlrd.open_workbook(excel_file)
+        return self.import_data(book)
+
+    def import_data(self, xls_book):
+        self.log_message('Creating records', new_line=False)
         bad_rows = []
         new_records = []
+        rows = self.book_to_dict(xls_book)
+        self.log_message(" Loaded %d rows." % len(rows))
         for row_number, row in enumerate(rows):
             try:
                 raw_land_record = self.row_to_object(row)
                 raw_land_record.save()
                 new_records.append(raw_land_record.id)
-                print('.', end="")
+                self.log_message('.', new_line=False)
             except Exception as e:
-                print('X', end="")
+                self.log_message('X', new_line=False)
                 bad_rows.append({'row':row_number+1, 'reason':str(e)})
 
-        print()
-        print("Saved %d Raw Land Records" % len(new_records))
+        self.log_message('')
+        self.log_message("Saved %d Raw Land Records" % len(new_records))
 
         if len(bad_rows) > 0:
-            print("Bad data (%d): " % len(bad_rows))
+            self.log_message("Bad data (%d): " % len(bad_rows))
             for r in bad_rows:
-                print("Row %s: %s" % (r['row'], r['reason']))
+                self.log_message("Row %s: %s" % (r['row'], r['reason']))
 
     def row_to_object(self, row):
         rlr = RawLandRecord()
@@ -112,10 +127,6 @@ class Importer(object):
             rlr.condominium = row['condominium']
 
         return rlr
-
-    def xls_file_to_dict(self, filename):
-        book = xlrd.open_workbook(filename)
-        return book_to_dict(book)
 
     def book_to_dict(self, book):
         sheet = book.sheet_by_index(0)
