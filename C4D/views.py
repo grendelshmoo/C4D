@@ -5,12 +5,13 @@ from django.shortcuts import render, render_to_response, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.forms.models import model_to_dict
-
-import xlrd
+from django.utils import timezone
 
 from C4D.forms import ModelSearchForm, UploadFileForm
 from C4D.models import RawLandRecord, ImportLog
 from C4D.importer import Importer
+
+import xlrd
 
 def home(request):
     return render_to_response('home.html',{}, RequestContext(request))
@@ -64,4 +65,14 @@ def import_file(request):
     else:
         form = UploadFileForm()
     import_logs = ImportLog.objects.all().order_by('-start_ts')[:5]
+    for log in import_logs:
+        e = log.end_ts
+
+        if not e:
+            e = timezone.now()
+        time_diff = e.replace(microsecond = 0) - log.start_ts.replace(microsecond = 0)
+        log.duration = str(time_diff)
+
+        if log.duration == '0:00:00':
+            log.duration = 'less than a second'
     return render_to_response('import_file.html', {'form':form, 'logs': logs, 'import_logs': import_logs}, RequestContext(request))

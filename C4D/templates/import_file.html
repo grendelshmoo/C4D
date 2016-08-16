@@ -29,13 +29,16 @@
 				Start Timestamp
 			</th>
 			<th>
-				End Timestamp
+				Import Duration
 			</th>
 			<th>
 				Filename
 			</th>
 			<th>
 				rows
+			</th>
+			<th>
+				
 			</th>
 		</thead>
 		{% for log in import_logs %}
@@ -47,13 +50,16 @@
 				{{ log.start_ts}}
 			</td>
 			<td>
-				{{ log.end_ts}}
+				{{ log.duration }}
 			</td>
 			<td>
 				{{ log.file_name}}
 			</td>
 			<td>
 				{{ log.rawlandrecord_set.count }}
+			</td>
+			<td>
+				<button type='submit' value='{{ log.id }}'>Delete</button>
 			</td>
 		</tr>
 		{% endfor %}
