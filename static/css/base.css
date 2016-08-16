@@ -16,14 +16,13 @@
 
 #log-div {
   margin-top: 3%;
-  width: 75%;
 }
 
 #log-header {
   display: inline;
+  margin-bottom: 3%;
 }
 
 #log-link {
-  display: inline;
-  margin-left: 60%;
+  margin-right: 0px;
 }

@@ -14,16 +14,15 @@ from C4D.importer import Importer
 import xlrd
 
 def home(request):
-    records = RawLandRecord.objects.all()
+    rec_count = RawLandRecord.objects.all().count()
+    islands_query = RawLandRecord.objects.values('island').distinct()
     islands = {}
-    for r in records:
-        if not r.island:
-            print(r.island)
-        elif islands.has_key(r.island):
-            islands[r.island] += 1
-        else:
-            islands[r.island] = 1
-    rec_count = len(records)
+    for row in islands_query:
+        i = row['island']
+        c = RawLandRecord.objects.filter(island=i).count()
+        if not i:
+            i = 'Unknown'
+        islands[i] = c
     return render_to_response('home.html',{'rec_count':rec_count, 'islands': islands}, RequestContext(request))
 
 @login_required
