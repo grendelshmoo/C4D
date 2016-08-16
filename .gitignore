@@ -63,3 +63,5 @@ target/
 
 local_settings.py
 data/
+backups/
+media/
