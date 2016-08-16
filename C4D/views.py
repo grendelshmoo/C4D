@@ -12,6 +12,8 @@ from C4D.models import RawLandRecord, ImportLog
 from C4D.importer import Importer
 
 import xlrd
+import Tkinter
+import tkMessageBox
 
 def home(request):
     return render_to_response('home.html',{}, RequestContext(request))
@@ -56,7 +58,10 @@ def import_file(request):
     logs = None
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
+        if 'log_id' in request.POST:
+            id = request.POST['log_id']
+            log = ImportLog.objects.get(pk=id).delete()
+        elif form.is_valid():
             upload_file = request.FILES['file']
             xls_book = xlrd.open_workbook(file_contents=upload_file.read())
             importer = Importer(request.user, upload_file.name)
