@@ -21,7 +21,6 @@
 
 	<div id='log-div'>
 		<h2 id='log-header'>Recent Import Logs</h2>
-		<a id='log-link' href="{% url 'admin:C4D_importlog_changelist' %}">See All</a>
 		<table>
 			<thead>
 				<th>
@@ -70,5 +69,6 @@
 			</tr>
 			{% endfor %}
 		</table>
+		<a id='log-link' href="{% url 'admin:C4D_importlog_changelist' %}">See All</a>
 	</div>
 {% endblock %}
