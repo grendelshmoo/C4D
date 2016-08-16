@@ -62,7 +62,7 @@
 				<form method='POST' action='.'>
 					{% csrf_token %}
 					<input type='hidden' name='log_id' value='{{ log.id }}' />
-					<button type='submit' onclick="confirm('Are you sure you want to undo this import?')" name='undo_import'>Undo</button>
+					<button type='submit' onclick="return confirm('Are you sure you want to undo this import?')" name='undo_import'>Undo</button>
 				</form>
 			</td>
 		</tr>
