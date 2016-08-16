@@ -152,7 +152,7 @@ class BackupManager(object):
         media_file = '%s-media.tgz' % file_token
         media_path = '%s%s' % (settings.BACKUP_ROOT, media_file)
         dirs = settings.MEDIA_ROOT.split('/')
-        parent_dir = dirs[len(dirs) - 1]
+        parent_dir = dirs[len(dirs) - 2]
         if not parent_dir:
             parent_dir = "."
         command = 'cd "%s" && cd .. && tar -czf "%s" "%s"' % (settings.MEDIA_ROOT, media_path, parent_dir)
