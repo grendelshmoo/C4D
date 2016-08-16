@@ -7,6 +7,10 @@ ADMINS = (
 )
 MANAGERS = ADMINS
 
+# Generate one for yourself
+# http://www.miniwebtool.com/django-secret-key-generator/
+SECRET_KEY = 'YOUR_SECRET_KEY'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
