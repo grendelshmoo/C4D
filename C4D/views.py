@@ -61,6 +61,7 @@ def import_file(request):
         if 'log_id' in request.POST:
             id = request.POST['log_id']
             log = ImportLog.objects.get(pk=id).delete()
+            messages.success(request, 'Import deleted')
         elif form.is_valid():
             upload_file = request.FILES['file']
             xls_book = xlrd.open_workbook(file_contents=upload_file.read())
