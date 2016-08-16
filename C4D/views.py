@@ -12,11 +12,19 @@ from C4D.models import RawLandRecord, ImportLog
 from C4D.importer import Importer
 
 import xlrd
-import Tkinter
-import tkMessageBox
 
 def home(request):
-    return render_to_response('home.html',{}, RequestContext(request))
+    records = RawLandRecord.objects.all()
+    islands = {}
+    for r in records:
+        if not r.island:
+            print(r.island)
+        elif islands.has_key(r.island):
+            islands[r.island] += 1
+        else:
+            islands[r.island] = 1
+    rec_count = len(records)
+    return render_to_response('home.html',{'rec_count':rec_count, 'islands': islands}, RequestContext(request))
 
 @login_required
 def search(request):
@@ -70,7 +78,7 @@ def import_file(request):
             logs = importer.messages
     else:
         form = UploadFileForm()
-    import_logs = ImportLog.objects.all().order_by('-start_ts')[:5]
+    import_logs = ImportLog.objects.all().order_by('-start_ts')[:20]
     for log in import_logs:
         e = log.end_ts
 

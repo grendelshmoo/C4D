@@ -1,56 +1,59 @@
 {% extends "admin/base.html" %}
 
 {% block content %}
-<h2>Overview</h2>
+<div id='home-p'>
+	<h2>Overview</h2>
+	<p>
+		This application currently loads everything in to one large flattened table of
+		Raw Land Records.  In the future this data can be normalized in to Land Records,
+		Properties, Offices, Municipalities, etc for greater searchability and indexing.
+	</p>
 
-<p>
-This application currently loads everything in to one large flattened table of
-Raw Land Records.  In the future this data can be normalized in to Land Records,
-Properties, Offices, Municipalities, etc for greater searchability and indexing.
-</p>
+	<ul>
+		<li>
+			Search for a group of records or individual records on Search page
+		</li>
+		<li>
+			Edit land records after finding necessary record via Search page
+		</li>
+		<li>
+			Import files and review recents imports on Import Page
+		</li>
+		<li>
+			Review all land records and import logs on Admin page
+		</li>
+	</ul>
+	<div id='stats'>
+		<h2>Stats</h2>
+		<table id='stats-table'>
+			<thead>
+				<th>
+					Island
+				</th>
+				<th>
+					# of Land Records
+				</th>
+			</thead>
+			{% for island, value in islands.items %}
+			<tr class="{% cycle 'row-even' 'row-odd' %}">
+				<td>
+					{{ island }}
+				</td>
+				<td>
+					{{ value }}
+				</td>
+			</tr>
+			{% endfor %}
+			<tr>
+				<td>
+					TOTAL
+				</td>
+				<td>
+					{{rec_count}}
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
 
-<p>
-To view the records, go to the Admin page.
-</p>
-
-<h3>Data Model:</h3>
-{% autoescape off %}<pre>
-	class RawLandRecord(models.Model):
-	    office = models.CharField(max_length=3)
-	    document_date = models.DateField(blank=True, null=True)
-	    recording_date = models.DateField(blank=True, null=True)
-	    document_type = models.CharField(max_length=128, blank=True, null=True)
-	    title_company = models.CharField(max_length=256, blank=True, null=True)
-	    legal_description = models.CharField(max_length=256, blank=True, null=True)
-	    lot = models.CharField(max_length=64, blank=True, null=True)
-	    block = models.CharField(max_length=32, blank=True, null=True)
-	    tract = models.CharField(max_length=32, blank=True, null=True)
-	    unit = models.CharField(max_length=32, blank=True, null=True)
-	    area = models.FloatField(blank=True, null=True)
-	    phase = models.CharField(max_length=32, blank=True, null=True)
-	    increment = models.PositiveSmallIntegerField(blank=True, null=True)
-	    lot_sf = models.FloatField(blank=True, null=True)
-	    building_sf = models.FloatField(blank=True, null=True)
-	    map_document = models.IntegerField(blank=True, null=True)
-	    building_type = models.CharField(max_length=32, blank=True, null=True)
-	    year_built = models.PositiveSmallIntegerField(blank=True, null=True)
-	    construction_type  = models.CharField(max_length=32, blank=True, null=True)
-	    building_condition = models.CharField(max_length=32, blank=True, null=True)
-	    island = models.CharField(max_length=256, blank=True, null=True)
-	    municipality = models.CharField(max_length=256, blank=True, null=True)
-	    condominium = models.CharField(max_length=256, blank=True, null=True)
-	    instrument_number = models.CharField(max_length=32, blank=True, null=True)
-	    fy_number = models.CharField(max_length=64, blank=True, null=True)
-	    cnmi_file_numer = models.CharField(max_length=32, blank=True, null=True)
-	    lcdn = models.IntegerField(blank=True, null=True)
-	    book = models.PositiveSmallIntegerField(blank=True, null=True)
-	    page = models.PositiveSmallIntegerField(blank=True, null=True)
-	    amount = models.FloatField(default=0.0, blank=True, null=True)
-	    recording_fees = models.FloatField(default=0.0, blank=True, null=True)
-	    land_tax = models.FloatField(default=0.0, blank=True, null=True)
-	    building_tax = models.FloatField(default=0.0, blank=True, null=True)
-	    land_appraised_value = models.FloatField(default=0.0, blank=True, null=True)
-	    building_appraised_value = models.FloatField(default=0.0, blank=True, null=True)
-	    remarks = models.CharField(max_length=256, blank=True, null=True)
-</pre>{% endautoescape %}
 {% endblock %}

@@ -2,7 +2,7 @@
 
 {% block content %}
 	{% if logs %}
-	<h2>Imported File</h2>
+	<h2>Imported Data</h2>
 	<table>
 		{% for r in logs %}
 		<tr class="{% cycle 'row-even' 'row-odd' %}">
@@ -19,53 +19,56 @@
 		<input type='submit' value='Upload'/>
 	</form>
 
-	<h2>Import Logs</h2>
-	<table>
-		<thead>
-			<th>
-				Imported By
-			</th>
-			<th>
-				Start Timestamp
-			</th>
-			<th>
-				Import Duration
-			</th>
-			<th>
-				Filename
-			</th>
-			<th>
-				rows
-			</th>
-			<th>
+	<div id='log-div'>
+		<h2 id='log-header'>Recent Import Logs</h2>
+		<a id='log-link' href="{% url 'admin:C4D_importlog_changelist' %}">See All</a>
+		<table>
+			<thead>
+				<th>
+					Imported By
+				</th>
+				<th>
+					Start Timestamp
+				</th>
+				<th>
+					Import Duration
+				</th>
+				<th>
+					Filename
+				</th>
+				<th>
+					rows
+				</th>
+				<th>
 
-			</th>
-		</thead>
-		{% for log in import_logs %}
-		<tr class="{% cycle 'row-even' 'row-odd' %}">
-			<td>
-				{{ log.imported_by }}
-			</td>
-			<td>
-				{{ log.start_ts}}
-			</td>
-			<td>
-				{{ log.duration }}
-			</td>
-			<td>
-				{{ log.file_name}}
-			</td>
-			<td>
-				{{ log.rawlandrecord_set.count }}
-			</td>
-			<td>
-				<form method='POST' action='.'>
-					{% csrf_token %}
-					<input type='hidden' name='log_id' value='{{ log.id }}' />
-					<button type='submit' onclick="return confirm('Are you sure you want to undo this import?')" name='undo_import'>Undo</button>
-				</form>
-			</td>
-		</tr>
-		{% endfor %}
-	</table>
+				</th>
+			</thead>
+			{% for log in import_logs %}
+			<tr class="{% cycle 'row-even' 'row-odd' %}">
+				<td>
+					{{ log.imported_by }}
+				</td>
+				<td>
+					{{ log.start_ts}}
+				</td>
+				<td>
+					{{ log.duration }}
+				</td>
+				<td>
+					{{ log.file_name}}
+				</td>
+				<td>
+					{{ log.rawlandrecord_set.count }}
+				</td>
+				<td>
+					<form method='POST' action='.'>
+						{% csrf_token %}
+						<input type='hidden' name='log_id' value='{{ log.id }}' />
+						<button type='submit' onclick="return confirm('Are you sure you want to undo this import?')" name='undo_import'>Undo</button>
+					</form>
+				</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
 {% endblock %}

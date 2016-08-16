@@ -1,1 +1,29 @@
 .row-even { background-color: #EEE; }
+
+#home-p {
+  width: 70%;
+  margin-left: 15%;
+}
+
+#stats {
+  margin-top: 5%;
+}
+
+#stats-table {
+  margin-left: 20%;
+  width: 50%;
+}
+
+#log-div {
+  margin-top: 3%;
+  width: 75%;
+}
+
+#log-header {
+  display: inline;
+}
+
+#log-link {
+  display: inline;
+  margin-left: 60%;
+}
