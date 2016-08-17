@@ -28,6 +28,7 @@ def home(request):
 @login_required
 def search(request):
     search_results = None
+    query = []
     if request.method == "POST":
         search_form = ModelSearchForm(request.POST)
         if not search_form.is_valid():
@@ -56,7 +57,7 @@ def search(request):
     else:
         search_form = ModelSearchForm()
 
-    return render_to_response('search.html',{'search_form':search_form, 'search_results':search_results}, RequestContext(request))
+    return render_to_response('search.html',{'search_form':search_form, 'search_results':search_results, 'query': query}, RequestContext(request))
 
 @login_required
 def view_record(request, record_id):
