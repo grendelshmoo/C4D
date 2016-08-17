@@ -4,9 +4,10 @@ from models import ImportLog, RawLandRecord
 
 @admin.register(RawLandRecord)
 class RawLandRecordAdmin(admin.ModelAdmin):
-    search_fields = ('legal_description', 'lot')
+    #search_fields = ('legal_description', 'lot')
     list_display = ('id', 'office', 'island', 'document_date', 'legal_description')
     list_filter = ('office', 'island')
+    list_per_page = 40
     exclude = ('import_log', )
 
 
