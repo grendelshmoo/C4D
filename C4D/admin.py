@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.http import HttpResponse
 from django.core import serializers
+from django.contrib import messages
 
 from C4D.importer import Exporter
 from models import ImportLog, RawLandRecord
@@ -9,6 +10,9 @@ from models import ImportLog, RawLandRecord
 class RawLandRecordAdmin(admin.ModelAdmin):
 
     def export_xls(modeladmin, request, queryset):
+        if queryset.count() > 65532:
+            messages.add_message(request, messages.ERROR, "Exports must be limited to 65532 rows or less!")
+            return
         exporter = Exporter()
         response = HttpResponse(content_type='application/ms-excel')
         response['Content-Disposition'] = 'attachment; filename=%s' % exporter.file_name
