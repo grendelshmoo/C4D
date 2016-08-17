@@ -46,6 +46,10 @@ def search(request):
                 search_results = search_results.filter(grantor__icontains=search_form.cleaned_data['grantor'])
             if search_form.cleaned_data['grantee']:
                 search_results = search_results.filter(grantee__icontains=search_form.cleaned_data['grantee'])
+            if search_form.cleaned_data['document_date']:
+                search_results = search_results.filter(document_date__icontains=search_form.cleaned_data['document_date'])
+            if search_form.cleaned_data['recording_date']:
+                search_results = search_results.filter(recording_date__icontains=search_form.cleaned_data['recording_date'])
             if search_results.count() > 1000:
                 messages.add_message(request, messages.ERROR, "Search too broad.  Returned %d rows!" % search_results.count())
                 search_result = None
