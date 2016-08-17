@@ -4,10 +4,27 @@ from django.utils import timezone
 
 from C4D.models import RawLandRecord
 
+class BaseModelForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('auto_id', '%s')
+        kwargs.setdefault('label_suffix', '')
+        super().__init__(*args, **kwargs)
+
+        for field_name in self.fields:
+            field = self.fields.get(field_name)
+            if field:
+                field.widget.attrs.update({
+                'placeholder' : field.help_text
+                })
+
 class ModelSearchForm(forms.ModelForm):
     class Meta:
         model = RawLandRecord
         fields = ['legal_description', 'lot', 'block', 'tract', 'grantor', 'grantee', 'document_date', 'recording_date']
+        help_texts = {
+            'document_date' : 'e.g. 1998-01-01',
+            'recording_date' : 'e.g. 1998-01-01'
+        }
 
 class UploadFileForm(forms.Form):
     file = forms.FileField()
