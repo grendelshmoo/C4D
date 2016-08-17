@@ -1,13 +1,26 @@
 from django.contrib import admin
+from django.http import HttpResponse
+from django.core import serializers
 
+from C4D.importer import Exporter
 from models import ImportLog, RawLandRecord
 
 @admin.register(RawLandRecord)
 class RawLandRecordAdmin(admin.ModelAdmin):
+
+    def export_xls(modeladmin, request, queryset):
+        exporter = Exporter()
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename=%s' % exporter.file_name
+        exporter.export_xls(response, queryset)
+        return response
+    export_xls.short_description = "Export XLS File"
+
     #search_fields = ('legal_description', 'lot')
     list_display = ('id', 'office', 'island', 'document_date', 'legal_description')
     list_filter = ('office', 'island')
     list_per_page = 40
+    actions = ['export_xls', 'export_json']
     exclude = ('import_log', )
 
 
