@@ -58,6 +58,19 @@ class RawLandRecord(models.Model):
     remarks = models.CharField(max_length=1024, blank=True, null=True)
     import_log = models.ForeignKey(ImportLog, blank=True, null=True, db_index=True)
 
+    def __unicode__(self):
+        description = ""
+        if self.legal_description:
+            description = self.legal_description
+        else:
+            if self.lot:
+                description += "lot: " + self.lot
+            if self.block:
+                description += " block: " + self.block
+            if self.tract:
+                description += " tract: " + self.tract
+        return description.strip()
+
 
 class TitleCompany(models.Model):
     name = models.CharField(max_length=256)
