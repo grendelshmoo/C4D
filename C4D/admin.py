@@ -24,7 +24,7 @@ class RawLandRecordAdmin(admin.ModelAdmin):
     list_display = ('id', 'office', 'island', 'document_date', 'legal_description')
     list_filter = ('office', 'island')
     list_per_page = 40
-    actions = ['export_xls', 'export_json']
+    actions = ['export_xls', ]
     exclude = ('import_log', )
 
 
