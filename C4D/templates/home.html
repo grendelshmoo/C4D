@@ -37,7 +37,7 @@
 			{% for island, value in islands.items %}
 			<tr class="{% cycle 'row-even' 'row-odd' %}">
 				<td>
-					{{ island }}
+					<a href="{% url 'admin:C4D_rawlandrecord_changelist' %}?island={{island}}"> {{ island }} </a>
 				</td>
 				<td>
 					{{ value }}
