@@ -10,10 +10,13 @@
     <th>Office</th>
     <th>Island</th>
     <th>Document Date</th>
+    <th>Recording Date</th>
     <th>Legal Description</th>
     <th>Lot</th>
     <th>Block</th>
     <th>Tract</th>
+    <th>Grantor</th>
+    <th>Grantee</th>
   </tr>
   {% for r in search_results %}
     <tr class="{% cycle 'row-even' 'row-odd' %}">
@@ -21,10 +24,13 @@
       <td>{{ r.office }}</td>
       <td>{{ r.island }}</td>
       <td>{{ r.document_date }}</td>
+      <td>{{ r.recording_date }}</td>
       <td>{{ r.legal_description }}</td>
       <td>{{ r.lot }}</td>
       <td>{{ r.block }}</td>
       <td>{{ r.tract }}</td>
+      <td>{{ r.grantor }}</td>
+      <td>{{ r.grantee }}</td>
     </tr>
   {% endfor %}
 </table>
