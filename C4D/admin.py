@@ -7,6 +7,7 @@ class RawLandRecordAdmin(admin.ModelAdmin):
     search_fields = ('legal_description', 'lot')
     list_display = ('id', 'office', 'island', 'document_date', 'legal_description')
     list_filter = ('office', 'island')
+    exclude = ('import_log', )
 
 
 class RawLandRecordInline(admin.TabularInline):

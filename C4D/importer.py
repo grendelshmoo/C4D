@@ -7,6 +7,32 @@ from django.utils import timezone
 
 from C4D.models import RawLandRecord, ImportLog
 
+######################################################################
+# Utilities
+######################################################################
+
+def book_to_dict(book):
+    sheet = book.sheet_by_index(0)
+    keys = [sheet.cell(0, col_index).value for col_index in xrange(sheet.ncols)]
+    dict_list = []
+    for row_index in xrange(1, sheet.nrows):
+        d = {keys[col_index]: sheet.cell(row_index, col_index).value
+            for col_index in xrange(sheet.ncols)}
+        dict_list.append(d)
+    return dict_list
+
+
+def xls_date(raw_date):
+    try:
+        return xlrd.xldate.xldate_as_datetime(raw_date, 0)
+    except Exception as e:
+        return None
+
+
+######################################################################
+# Data Importer
+######################################################################
+
 class Importer(object):
 
     def __init__(self, user, file_name):
@@ -32,7 +58,7 @@ class Importer(object):
     def import_data(self, xls_book):
         bad_rows = []
         new_records = []
-        rows = self.book_to_dict(xls_book)
+        rows = book_to_dict(xls_book)
         self.log_message("Loaded %d rows." % len(rows))
         for row_number, row in enumerate(rows):
             try:
@@ -56,8 +82,8 @@ class Importer(object):
         r = RawLandRecord()
         r.import_log = self.import_log
         r.office = row['office']
-        r.document_date = row['document_date']
-        r.recording_date = row['recording_date']
+        r.document_date = xls_date(row['document_date'])
+        r.recording_date = xls_date(row['recording_date'])
         r.document_type = row['document_type']
         r.grantor = row['grantor']
         r.grantee = row['grantee']
@@ -176,13 +202,3 @@ class Importer(object):
     #         rlr.condominium = row['condominium']
     #
     #     return rlr
-
-    def book_to_dict(self, book):
-        sheet = book.sheet_by_index(0)
-        keys = [sheet.cell(0, col_index).value for col_index in xrange(sheet.ncols)]
-        dict_list = []
-        for row_index in xrange(1, sheet.nrows):
-            d = {keys[col_index]: sheet.cell(row_index, col_index).value
-                for col_index in xrange(sheet.ncols)}
-            dict_list.append(d)
-        return dict_list
