@@ -19,8 +19,8 @@ class ImportLog(models.Model):
 
 class RawLandRecord(models.Model):
     office = models.CharField(max_length=3)
-    document_date = models.CharField(max_length=128, blank=True, null=True)
-    recording_date = models.CharField(max_length=128, blank=True, null=True)
+    document_date = models.DateField(blank=True, null=True)
+    recording_date = models.DateField(blank=True, null=True)
     document_type = models.CharField(max_length=128, blank=True, null=True)
     grantor = models.CharField(max_length=512, blank=True, null=True, db_index=True)
     grantee = models.CharField(max_length=512, blank=True, null=True, db_index=True)
