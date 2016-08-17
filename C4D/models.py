@@ -59,12 +59,12 @@ class RawLandRecord(models.Model):
     import_log = models.ForeignKey(ImportLog, blank=True, null=True, db_index=True)
 
     def __unicode__(self):
-        description = ""
+        description = "ID: " + str(self.id)
         if self.legal_description:
-            description = self.legal_description
+            description += ", " + self.legal_description
         else:
             if self.lot:
-                description += "lot: " + self.lot
+                description += " lot: " + self.lot
             if self.block:
                 description += " block: " + self.block
             if self.tract:
