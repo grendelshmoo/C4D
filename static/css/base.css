@@ -1,5 +1,10 @@
 .row-even { background-color: #EEE; }
 
+.stats-header {
+  background: rgba(132, 183, 207, .8);
+  color: black;
+}
+
 #home-p {
   width: 70%;
   margin-left: 15%;
