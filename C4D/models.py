@@ -5,7 +5,7 @@ from django.utils import timezone
 
 class ImportLog(models.Model):
     imported_by = models.ForeignKey(User, blank=True, null=True, related_name="+")
-    start_ts = models.DateTimeField(auto_now=True)
+    start_ts = models.DateTimeField(auto_now_add=True)
     end_ts = models.DateTimeField(null=True, blank=True)
     file_name = models.CharField(max_length=256)
 
