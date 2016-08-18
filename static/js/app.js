@@ -1,19 +1,19 @@
   function initPage(){
-	   $("#id_document_date_range").hide();
-     $('#id_recording_date_range').hide();
+     $("tr:has(.dd-hidden)").hide();
+     $("tr:has(.rd-hidden)").hide();
   }
 
   function ddRange() {
     var value = $('input[name=dd_sel]:checked').val();
 
     if (value === 'dd_range') {
-      if($('#id_document_date_range').is(':hidden')) {
-        $('#id_document_date_range').show();
+      if($('tr:has(.dd-hidden)').is(':hidden')) {
+        $('tr:has(.dd-hidden)').show()
       } else {
-        $('#id_document_date_range').hide();
+        $('tr:has(.dd-hidden)').hide()
       }
     } else {
-      $('#id_document_date_range').hide();
+      $('tr:has(.dd-hidden)').hide()
     }
   }
 
@@ -21,13 +21,13 @@
     var value = $('input[name=rd_sel]:checked').val()
 
     if (value === 'rd_range') {
-      if($('#id_recording_date_range').is(':hidden')) {
-        $('#id_recording_date_range').show();
+      if($('tr:has(.rd-hidden)').is(':hidden')) {
+        $('tr:has(.rd-hidden)').show();
       } else {
-        $('#id_recording_date_range').hide();
+        $('tr:has(.rd-hidden)').hide();
       }
     } else {
-      $('#id_recording_date_range').hide();
+      $('tr:has(.rd-hidden)').hide();
     }
   }
 
