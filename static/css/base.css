@@ -31,6 +31,25 @@ label {
   width: 50%;
 }
 
+#search-table {
+  margin-left: 5%;
+}
+
+#search-table tr {
+  padding-top: 3%;
+}
+
+#search-table input {
+  padding-right: 50%;
+}
+
+#search-submit {
+  margin-top: 1%;
+  margin-left: 6%;
+  width: 15%;
+  background-color: RGBA(74, 129, 155, 1)
+}
+
 #log-div {
   margin-top: 3%;
 }

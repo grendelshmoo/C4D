@@ -34,6 +34,8 @@ def search(request):
         if not search_form.is_valid():
             messages.add_message(request, messages.ERROR, "Invalid Search Form")
         else:
+            if search_form.cleaned_data['island']:
+                query.append('island__icontains=' + str(search_form.cleaned_data['island']))
             if search_form.cleaned_data['legal_description']:
                 data = str(search_form.cleaned_data['legal_description'])
                 query.append('legal_description__icontains=' + data)
