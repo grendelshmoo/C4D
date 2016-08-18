@@ -1,8 +1,20 @@
+label {
+  font-weight: bolder;
+}
+
 .row-even { background-color: #EEE; }
 
 .stats-header {
   background: rgba(132, 183, 207, .8);
   color: black;
+}
+
+.form-input {
+  margin-right: 3%;
+}
+
+.radio-btn {
+  margin-left: 2%;
 }
 
 #home-p {

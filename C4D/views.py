@@ -1,13 +1,13 @@
 from django.conf import settings
 from django.template import RequestContext, Template
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, Http404
-from django.shortcuts import render, render_to_response, get_object_or_404
+from django.shortcuts import render, redirect, render_to_response, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.forms.models import model_to_dict
 from django.utils import timezone
 
-from C4D.forms import ModelSearchForm, UploadFileForm
+from C4D.forms import SearchForm, UploadFileForm
 from C4D.models import RawLandRecord, ImportLog
 from C4D.importer import Importer
 
@@ -27,37 +27,106 @@ def home(request):
 
 @login_required
 def search(request):
-    search_results = None
     query = []
     if request.method == "POST":
-        search_form = ModelSearchForm(request.POST)
+        search_form = SearchForm(request.POST)
         if not search_form.is_valid():
             messages.add_message(request, messages.ERROR, "Invalid Search Form")
         else:
-            search_results = RawLandRecord.objects.all()
             if search_form.cleaned_data['legal_description']:
-                search_results = search_results.filter(legal_description__icontains=search_form.cleaned_data['legal_description'])
+                data = str(search_form.cleaned_data['legal_description'])
+                if search_form.cleaned_data['leg_sel']:
+                    if request.POST.get('leg_sel') == 'leg_eq':
+                        query.append('legal_description=' +  data)
+                    elif request.POST.get('leg_sel') == 'leg_cont':
+                        query.append('legal_description__icontains=' +  data)
+                    elif request.POST.get('leg_sel') == 'leg_starts':
+                        query.append('legal_description__startswith=' + data)
+                else:
+                    query.append('legal_description__icontains=' + data)
             if search_form.cleaned_data['lot']:
-                search_results = search_results.filter(lot__icontains=search_form.cleaned_data['lot'])
+                lot = str(search_form.cleaned_data['lot'])
+                if search_form.cleaned_data['lot_sel']:
+                    if request.POST.get('lot_sel') == 'lot_eq':
+                        query.append('lot=' + lot)
+                    elif request.POST.get('lot_sel') == 'lot_cont':
+                        query.append('lot__icontains=' + lot)
+                    elif request.POST.get('lot_sel') == 'lot_starts':
+                        query.append('lot__startswith' + lot)
+                else:
+                    query.append('lot__icontains=' + lot)
             if search_form.cleaned_data['block']:
-                search_results = search_results.filter(block__icontains=search_form.cleaned_data['block'])
+                block = str(search_form.cleaned_data['block'])
+                if search_form.cleaned_data['block_sel']:
+                    if request.POST.get('block_sel') == 'block_eq':
+                        query.append('block=' + block)
+                    elif request.POST.get('block_sel') == 'block_cont':
+                        query.append('block__icontains=' + block)
+                    elif request.POST.get('block_sel') == 'block_starts':
+                        query.append('block__startswith=' + block)
+                else:
+                    query.append('block__icontains=' + block)
             if search_form.cleaned_data['tract']:
-                search_results = search_results.filter(tract__icontains=search_form.cleaned_data['tract'])
+                tract = str(search_form.cleaned_data['tract'])
+                if search_form.cleaned_data['tract_sel']:
+                    if request.POST.get('tract_sel' == 'tract_eq'):
+                        query.append('tract=' + tract)
+                    elif request.POST.get('tract_sel' == 'tract_cont'):
+                        query.append('tract__icontains=' + tract)
+                    elif request.POST.get('tract_sel' == 'tract_starts'):
+                        query.append('tract__startswith=' + tract)
+                else:
+                    query.append('tract__icontains=' + tract)
             if search_form.cleaned_data['grantor']:
-                search_results = search_results.filter(grantor__icontains=search_form.cleaned_data['grantor'])
+                grantor = str(search_form.cleaned_data['grantor'])
+                if search_form.cleaned_data['grantor_sel']:
+                    if request.POST.get('grantor_sel') == 'grantor_eq':
+                        query.append('grantor=' + grantor)
+                    elif request.POST.get('grantor_sel') == 'grantor_cont':
+                        query.append('grantor__icontains=' + grantor)
+                    elif request.POST.get('grantor_sel') == 'grantor_starts':
+                        query.append('grantor__startswith=' + grantor)
+                else:
+                    query.append('grantor__icontains=' + grantor)
             if search_form.cleaned_data['grantee']:
-                search_results = search_results.filter(grantee__icontains=search_form.cleaned_data['grantee'])
+                grantee = str(search_form.cleaned_data['grantee'])
+                if search_form.cleaned_data['grantee_sel']:
+                    if request.POST.get('grantee_sel') == 'grantee_eq':
+                        query.append('grantee=' + grantee)
+                    elif request.POST.get('grantee_sel') == 'grantee_cont':
+                        query.append('grantee__icontains=' + grantee)
+                    elif request.POST.get('grantee_sel') == 'grantee_starts':
+                        query.append('grantee__startswith=' + grantee)
+                else:
+                    query.append('grantee__icontains=' + grantee)
             if search_form.cleaned_data['document_date']:
-                search_results = search_results.filter(document_date__icontains=search_form.cleaned_data['document_date'])
+                dd = str(search_form.cleaned_data['document_date'])
+                if search_form.cleaned_data['dd_sel']:
+                    if request.POST.get('dd_sel') == 'dd_eq':
+                        query.append('document_date=' + dd)
+                    elif request.POST.get('dd_sel') == 'dd_less':
+                        query.append('document_date__lte=' + dd)
+                    elif request.POST.get('dd_sel') == 'dd_greater':
+                        query.append('document_date__gte=' + dd)
+                else:
+                    query.append('document_date=' + dd)
             if search_form.cleaned_data['recording_date']:
-                search_results = search_results.filter(recording_date__icontains=search_form.cleaned_data['recording_date'])
-            if search_results.count() > 1000:
-                messages.add_message(request, messages.ERROR, "Search too broad.  Returned %d rows!" % search_results.count())
-                search_result = None
+                rd = str(search_form.cleaned_data['recording_date'])
+                if search_form.cleaned_data['rd_sel']:
+                    if request.POST.get('rd_sel') == 'rd_eq':
+                        query.append('recording_date=' + rd)
+                    elif request.POST.get('rd_sel') == 'rd_less':
+                        query.append('recording_date__lte=' + rd)
+                    elif request.POST.get('rd_sel') == 'rd_greater':
+                        query.append('recording_date__gte=' + rd)
+                else:
+                    query.append('recording_date=' + rd)
+            query_string = '&'.join(query)
+            url = '/admin/C4D/rawlandrecord/?' + query_string
+            return HttpResponseRedirect(url)
     else:
-        search_form = ModelSearchForm()
-
-    return render_to_response('search.html',{'search_form':search_form, 'search_results':search_results, 'query': query}, RequestContext(request))
+        search_form = SearchForm()
+    return render_to_response('search.html',{'search_form':search_form}, RequestContext(request))
 
 @login_required
 def view_record(request, record_id):
