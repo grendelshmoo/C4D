@@ -1,6 +1,6 @@
 from __future__ import print_function
 
-import xlrd
+import xlrd, xlwt
 
 from django.conf import settings
 from django.utils import timezone
@@ -28,6 +28,126 @@ def xls_date(raw_date):
     except Exception as e:
         return None
 
+
+######################################################################
+# Data Exporter
+######################################################################
+
+class Exporter(object):
+
+    def __init__(self):
+        self.file_name = "export-%s.xls" % timezone.now().date().isoformat()
+
+    def export_xls(self, response, queryset):
+        wb = xlwt.Workbook(encoding='utf-8')
+        ws = wb.add_sheet("Sheet1")
+
+        row_num = 0
+        columns = [
+            ('id', 2000),
+            ('office', 2000),
+            ('document_date', 3000),
+            ('recording_date', 3000),
+            ('document_type', 8000),
+            ('grantor', 8000),
+            ('grantee', 8000),
+            ('title_company', 2000),
+            ('legal_description', 2000),
+            ('lot', 2000),
+            ('block', 2000),
+            ('tract', 2000),
+            ('unit', 2000),
+            ('area', 2000),
+            ('phase', 2000),
+            ('increment', 2000),
+            ('square_footage', 2000),
+            ('building_square_footage', 2000),
+            ('map_document', 2000),
+            ('building_type', 4000),
+            ('year_built', 2000),
+            ('type_of_construction', 2000),
+            ('building_condition', 2000),
+            ('island', 2000),
+            ('municipality', 2000),
+            ('instrument_number', 2000),
+            ('fy_number', 4000),
+            ('lcdn', 2000),
+            ('book', 2000),
+            ('page', 2000),
+            ('amount', 2000),
+            ('recording_fees', 2000),
+            ('land_tax', 2000),
+            ('building_tax', 2000),
+            ('land_appraised_value', 2000),
+            ('building_appraised_value', 2000),
+            ('cnmi_file_number', 2000),
+            ('condominium', 2000),
+            ('remarks', 8000),
+        ]
+
+        # Columns
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+        for col_num in xrange(len(columns)):
+            ws.write(row_num, col_num, columns[col_num][0], font_style)
+            ws.col(col_num).width = columns[col_num][1]
+
+        # Rows
+        date_format = xlwt.XFStyle()
+        date_format.num_format_str = 'yyyy-mm-dd'
+        date_columns = [2, 3]
+        font_style = xlwt.XFStyle()
+        font_style.alignment.wrap = 1
+        for r in queryset:
+            row_num += 1
+            row = [
+                r.pk,
+                r.office,
+                r.document_date,
+                r.recording_date,
+                r.document_type,
+                r.grantor,
+                r.grantee,
+                r.title_company,
+                r.legal_description,
+                r.lot,
+                r.block,
+                r.tract,
+                r.unit,
+                r.area,
+                r.phase,
+                r.increment,
+                r.lot_sf,
+                r.building_sf,
+                r.map_document,
+                r.building_type,
+                r.year_built,
+                r.construction_type,
+                r.building_condition,
+                r.island,
+                r.municipality,
+                r.instrument_number,
+                r.fy_number,
+                r.lcdn,
+                r.book,
+                r.page,
+                r.amount,
+                r.recording_fees,
+                r.land_tax,
+                r.building_tax,
+                r.land_appraised_value,
+                r.building_appraised_value,
+                r.cnmi_file_number,
+                r.condominium,
+                r.remarks,
+            ]
+            for col_num in xrange(len(row)):
+                if col_num in date_columns:
+                    ws.write(row_num, col_num, row[col_num], date_format)
+                else:
+                    ws.write(row_num, col_num, row[col_num], font_style)
+
+        wb.save(response)
 
 ######################################################################
 # Data Importer
@@ -79,7 +199,10 @@ class Importer(object):
         self.import_log.mark_end()
 
     def row_to_object(self, row):
-        r = RawLandRecord()
+        if 'id' in row and row['id']:
+            r = RawLandRecord.objects.get(pk=row['id'])
+        else:
+            r = RawLandRecord()
         r.import_log = self.import_log
         r.office = row['office']
         r.document_date = xls_date(row['document_date'])
@@ -118,7 +241,7 @@ class Importer(object):
         r.building_appraised_value = row['building_appraised_value']
         r.remarks = row['remarks']
         if 'cnmi_file_number' in row:
-            r.cnmi_file_numer = row['cnmi_file_number']
+            r.cnmi_file_number = row['cnmi_file_number']
         if 'condominium' in row:
             r.condominium = row['condominium']
         return r
