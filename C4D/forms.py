@@ -23,7 +23,6 @@ class UploadFileForm(forms.Form):
 
 class SearchForm(forms.Form):
     legal_description = forms.CharField(max_length=100, required=False)
-    leg_sel = forms.ChoiceField(widget=RadioSelect(), choices=[['leg_eq', 'Equals'], ['leg_cont', 'Contains'], ['leg_starts', 'Starts with']], label='Description Search Criteria', required=False)
     lot = forms.CharField(max_length=16, required=False)
     lot_sel = forms.ChoiceField(widget=RadioSelect(), choices=[['lot_eq', 'Equals'], ['lot_cont', 'Contains'], ['lot_starts', 'Starts with']], label='Lot Search Criteria', required=False)
     block = forms.CharField(max_length=16, required=False)

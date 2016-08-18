@@ -1,11 +1,12 @@
 from django.conf import settings
 from django.template import RequestContext, Template
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, Http404
-from django.shortcuts import render, redirect, render_to_response, get_object_or_404
+from django.shortcuts import render, render_to_response, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.forms.models import model_to_dict
 from django.utils import timezone
+from django.core.urlresolvers import reverse
 
 from C4D.forms import SearchForm, UploadFileForm
 from C4D.models import RawLandRecord, ImportLog
@@ -35,15 +36,7 @@ def search(request):
         else:
             if search_form.cleaned_data['legal_description']:
                 data = str(search_form.cleaned_data['legal_description'])
-                if search_form.cleaned_data['leg_sel']:
-                    if request.POST.get('leg_sel') == 'leg_eq':
-                        query.append('legal_description=' +  data)
-                    elif request.POST.get('leg_sel') == 'leg_cont':
-                        query.append('legal_description__icontains=' +  data)
-                    elif request.POST.get('leg_sel') == 'leg_starts':
-                        query.append('legal_description__startswith=' + data)
-                else:
-                    query.append('legal_description__icontains=' + data)
+                query.append('legal_description__icontains=' + data)
             if search_form.cleaned_data['lot']:
                 lot = str(search_form.cleaned_data['lot'])
                 if search_form.cleaned_data['lot_sel']:
@@ -122,8 +115,8 @@ def search(request):
                 else:
                     query.append('recording_date=' + rd)
             query_string = '&'.join(query)
-            url = '/admin/C4D/rawlandrecord/?' + query_string
-            return HttpResponseRedirect(url)
+            url = '?' + query_string
+            return HttpResponseRedirect(reverse('admin:C4D_rawlandrecord_changelist') + url)
     else:
         search_form = SearchForm()
     return render_to_response('search.html',{'search_form':search_form}, RequestContext(request))
