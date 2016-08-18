@@ -95,7 +95,13 @@ def search(request):
             if search_form.cleaned_data['document_date']:
                 dd = str(search_form.cleaned_data['document_date'])
                 if search_form.cleaned_data['dd_sel']:
-                    if request.POST.get('dd_sel') == 'dd_eq':
+                    if request.POST.get('dd_sel') == 'dd_range':
+                        if search_form.cleaned_data['document_date_range']:
+                            lte_range = str(search_form.cleaned_data['document_date_range'])
+                            query.append('document_date__gte=' + dd + '&document_date__lte=' + lte_range)
+                        else:
+                            query.append('document_date__gte=' + dd)
+                    elif request.POST.get('dd_sel') == 'dd_eq':
                         query.append('document_date=' + dd)
                     elif request.POST.get('dd_sel') == 'dd_less':
                         query.append('document_date__lte=' + dd)
@@ -106,7 +112,13 @@ def search(request):
             if search_form.cleaned_data['recording_date']:
                 rd = str(search_form.cleaned_data['recording_date'])
                 if search_form.cleaned_data['rd_sel']:
-                    if request.POST.get('rd_sel') == 'rd_eq':
+                    if request.POST.get('rd_sel') == 'rd_range':
+                        if search_form.cleaned_data['recording_date_range']:
+                            lte_range = str(search_form.cleaned_data['recording_date_range'])
+                            query.append('recording_date__gte=' + rd + '&recording_date__lte=' + lte_range)
+                        else:
+                            query.append('document_date__gte=' + dd)
+                    elif request.POST.get('rd_sel') == 'rd_eq':
                         query.append('recording_date=' + rd)
                     elif request.POST.get('rd_sel') == 'rd_less':
                         query.append('recording_date__lte=' + rd)

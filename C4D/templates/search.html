@@ -4,7 +4,7 @@
   <h1>Search Criteria</h1>
   <form name='search_form' action="." method="post">
       {% csrf_token %}
-      <table>
+      <table id='search-table'>
       {{ search_form.as_table }}
       </table>
       <input type="submit" value="Search" />
