@@ -15,7 +15,7 @@ def add_view_permissions(sender, **kwargs):
 
     ignored_content_types = ['log entry' 'permission', 'group', 'user', 'content type', 'session']
     for ct in ContentType.objects.all():
-        if not ct in ignored_content_types:
+        if not str(ct) in ignored_content_types:
             codename = "view_%s" % ct.model
             if not Permission.objects.filter(content_type=ct, codename=codename):
                 p = Permission.objects.create(content_type=ct, codename=codename, name="Can view %s" % ct.name)
