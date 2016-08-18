@@ -21,7 +21,7 @@ class RawLandRecordAdmin(admin.ModelAdmin):
     export_xls.short_description = "Export XLS File"
 
     #search_fields = ('legal_description', 'lot')
-    list_display = ('id', 'office', 'island', 'document_date', 'legal_description')
+    list_display = ('__unicode__', 'document_date', 'recording_date', 'document_type', 'grantor', 'grantee' )
     list_filter = ('office', 'island')
     list_per_page = 40
     actions = ['export_xls', ]
