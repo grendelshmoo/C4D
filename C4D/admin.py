@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.http import HttpResponse
 from django.core import serializers
 from django.contrib import messages
+from django.contrib.contenttypes.models import ContentType
 
 from C4D.importer import Exporter
 from models import ImportLog, RawLandRecord
@@ -26,6 +27,19 @@ class RawLandRecordAdmin(admin.ModelAdmin):
     list_per_page = 40
     actions = ['export_xls', ]
     exclude = ('import_log', )
+
+    def has_change_permission(self, request, obj=None):
+        ct = ContentType.objects.get_for_model(self.model)
+        if request.user.is_superuser:
+            return True
+        return (request.user.has_perm('%s.view_%s' % (ct.app_label, ct.model)) or
+               request.user.has_perm('%s.change_%s' % (ct.app_label, ct.model)) )
+
+    def get_readonly_fields(self, request, obj=None):
+        ct = ContentType.objects.get_for_model(self.model)
+        if not request.user.is_superuser and request.user.has_perm('%s.view_%s' % (ct.app_label, ct.model)):
+            return [el.name for el in self.model._meta.fields]
+        return self.readonly_fields
 
 
 class RawLandRecordInline(admin.TabularInline):
